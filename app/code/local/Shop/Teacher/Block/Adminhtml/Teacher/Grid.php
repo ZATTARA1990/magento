@@ -32,6 +32,13 @@ class Shop_Teacher_Block_Adminhtml_Teacher_Grid extends Mage_Adminhtml_Block_Wid
             'type' => 'image',
         ));
 
+        $this->addColumn('skills', array(
+            'header' => $helper->__('Skills'),
+            'index' => 'skills',
+            'type' => 'text',
+        ));
+
+
         return parent::_prepareColumns();
     }
 

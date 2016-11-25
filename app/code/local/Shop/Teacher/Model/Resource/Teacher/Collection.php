@@ -9,4 +9,16 @@ class Shop_Teacher_Model_Resource_Teacher_Collection extends Mage_Core_Model_Mys
         $this->_init('shop_teacher/teacher', 'shop_teacher/teacher');
     }
 
+    public function _initSelect()
+    {
+        parent::_initSelect();
+        $this->getSelect()
+            ->joinLeft(
+                array('skills' => $this->getTable('shop_teacher/skills')),
+                'main_table.t_id = skills.s_id',
+                array('name')
+            );
+        return $this;
+    }
+
 }

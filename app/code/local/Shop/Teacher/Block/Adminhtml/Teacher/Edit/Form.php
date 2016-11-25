@@ -27,11 +27,11 @@ class Shop_Teacher_Block_Adminhtml_Teacher_Edit_Form extends Mage_Adminhtml_Bloc
             'name' => 'name',
         ));
 
-        /*$fieldset->addField('skils', 'select', array(
+        $fieldset->addField('skills', 'text', array(
             'label' => $helper->__('Skills'),
             'required' => true,
             'name' => 'skills',
-        ));*/
+        ));
 
         $fieldset->addField('photo', 'image', array(
             'label' => $helper->__('Photo'),
@@ -47,14 +47,6 @@ class Shop_Teacher_Block_Adminhtml_Teacher_Edit_Form extends Mage_Adminhtml_Bloc
 
         $this->setForm($form);
 
-
-    /*
-
-        if($data = Mage::getSingleton('adminhtml/session')->getFormData()){
-            $form->setValues($data);
-        } else {
-            $form->setValues($model->getData());
-        }*/
 
         return parent::_prepareForm();
     }
