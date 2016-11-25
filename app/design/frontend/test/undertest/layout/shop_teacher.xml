@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<layout>
+    <shop_teacher_index_index>
+        <reference name="content">
+            <block type="core/template" template="shopteacher/index.phtml" />
+        </reference>
+    </shop_teacher_index_index>
+</layout>
