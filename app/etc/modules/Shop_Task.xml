@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Shop_Task>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Shop_Task>
+    </modules>
+</config>
