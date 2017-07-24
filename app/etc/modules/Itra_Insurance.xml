@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Itra_Insurance>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Checkout/>
+            </depends>
+        </Itra_Insurance>
+    </modules>
+</config>
