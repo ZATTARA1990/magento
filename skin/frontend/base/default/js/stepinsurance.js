@@ -1,5 +1,4 @@
 (function ($) {
-    $('#cost').text();
     $('#insurance').change(function () {
         var val = $('#insurance').val();
 

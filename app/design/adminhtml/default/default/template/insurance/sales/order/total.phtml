@@ -1,9 +1,9 @@
-<?php $insurance_amount = $this->getOrder()->getInsuranceAmount();?>
 <?php if (Mage::helper('insurance')->isEnabled()): ?>
+    <?php $insurance_amount = $this->getOrder()->getInsuranceAmount();?>
     <tr>
         <td class="label"><?php echo Mage::helper('insurance')->__('Shipping Insurance') ?></td>
         <td>
             <?php echo $this->helper('checkout')->formatPrice($insurance_amount); ?>
         </td>
     </tr>
-<?php endif;?>
+<?php endif ?>

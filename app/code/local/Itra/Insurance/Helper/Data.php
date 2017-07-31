@@ -2,13 +2,19 @@
 
 class Itra_Insurance_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const ABSOLUTE_VALUE = 1;
+    const PERCENT_OF_ORDER = 2;
+
+    const DISABLED = 1;
+    const ENABLED = 2;
+
     /**
      * @return bool
      */
     public function isEnabled()
     {
         $val = Mage::getStoreConfig('insurance_options/messages/insurance_mode');
-        if ($val == 1) {
+        if ($val == self::DISABLED) {
             return false;
         }
         return true;
@@ -40,6 +46,30 @@ class Itra_Insurance_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * @return float|int|mixed
+     */
+    public function getCostInsurance()
+    {
+        /** @var Mage_Sales_Model_Quote $qoute */
+        $quote = $this->getQuote();
+
+        $subTotal = $quote->getSubtotal();
+
+        $insuranceType = Mage::getStoreConfig('insurance_options/messages/insurance_type');
+        $insuranceValue = Mage::getStoreConfig('insurance_options/messages/insurance_value');
+
+        $addCost = 0;
+
+        if($insuranceType == self::ABSOLUTE_VALUE) {
+            $addCost = $insuranceValue;
+        }  elseif($insuranceType == self::PERCENT_OF_ORDER) {
+            $addCost =  $insuranceValue * $subTotal/100;
+        }
+
+        return $addCost;
+    }
+
+    /**
      * @return Mage_Core_Model_Abstract
      */
     protected function getCheckout()
@@ -54,4 +84,5 @@ class Itra_Insurance_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->getCheckout()->getQuote();
     }
+
 }

@@ -1,58 +1,42 @@
-<div class="block block-progress opc-block-progress">
-    <div class="block-title">
-        <strong><span><?php echo $this->__('Your Checkout Progress') ?></span></strong>
-    </div>
-    <div class="block-content">
-        <dl>
-            <?php if ($this->getCheckout()->getStepData('billing', 'is_show')): ?>
-            <div id="billing-progress-opcheckout">
-                <?php echo $this->getChildHtml('billing.progress') ?>
-            </div>
-            <?php endif; ?>
+<?php if ($this->getCheckout()->getStepData('shipping_method', 'complete')): ?>
+    <dt class="complete">
+        <?php echo $this->__('Shipping Method') ?> <span class="changelink"><span class="separator">|</span> <a
+                    href="#shipping_method"
+                    onclick="checkout.changeSection('opc-shipping_method'); return false;"><?php echo $this->__('Change') ?></a></span>
+    </dt>
+    <dd class="complete">
+        <?php if ($this->getShippingMethod()): ?>
+            <?php echo $this->getShippingDescription() ?>
 
-            <?php if ($this->getCheckout()->getStepData('shipping', 'is_show')): ?>
-            <div id="shipping-progress-opcheckout">
-                <?php echo $this->getChildHtml('shipping.progress') ?>
-            </div>
+            <?php $_excl = $this->getShippingPriceExclTax(); ?>
+            <?php $_incl = $this->getShippingPriceInclTax(); ?>
+            <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                <?php echo $_incl; ?>
+            <?php else: ?>
+                <?php echo $_excl; ?>
             <?php endif; ?>
-
-            <?php if ($this->getCheckout()->getStepData('shipping_method', 'is_show')): ?>
-            <div id="shipping_method-progress-opcheckout">
-                <?php echo $this->getChildHtml('shippingmethod.progress') ?>
-            </div>
+            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
             <?php endif; ?>
-
-            <?php if (Mage::helper('insurance')->isEnabled() && $this->getCheckout()->getStepData('insurance', 'is_show')): ?>
-                <?php if($this->getCheckout()->getStepData('insurance', 'complete')): ?>
-                    <dt class="complete">
-                        <?php echo $this->__('Insurance Review') ?> <span class="separator">|</span> <a href="#insurance" onclick="checkout.accordion.openSection('opc-insurance'); return false;"><?php echo $this->__('Change') ?></a>
-                    </dt>
-                    <dd class="complete">
-                        <div>
-                            <?php echo $this->__('Insurance Review Is: ');?>
-                            <?php
-                            $cost = $this->getQuote()->getInsuranceAmount();
-                            if($cost){
-                                echo 'The cost of insurance was ' . $cost;
-                            } else{
-                                echo $this->__('No');
-                            }
-                            ?>
-                        </div>
-                    </dd>
-                <?php else: ?>
-                    <dt>
-                        <?php echo $this->__('Insurance Review') ?>
-                    </dt>
-                <?php endif; ?>
-            <?php endif; ?>
-
-            <?php if ($this->getCheckout()->getStepData('payment', 'is_show')): ?>
-            <div id="payment-progress-opcheckout">
-                <?php echo $this->getChildHtml('payment.progress') ?>
-            </div>
-            <?php endif; ?>
-        </dl>
-    </div>
-</div>
+            <?php if (Mage::helper('insurance')->isEnabled()): ?>
+                <div>
+                    <?php
+                    $cost = $this->getQuote()->getInsuranceAmount();
+                    if($cost){
+                        echo 'The cost of insurance was ' . $cost;
+                    } else{
+                        echo $this->__('No');
+                    }
+                    ?>
+                </div>
+            <?php endif ?>
+        <?php else: ?>
+            <?php echo $this->__('Shipping method has not been selected yet') ?>
+        <?php endif; ?>
+    </dd>
+<?php else: ?>
+    <dt>
+        <?php echo $this->__('Shipping Method') ?>
+    </dt>
+<?php endif; ?>
 

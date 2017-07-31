@@ -6,26 +6,37 @@ class Itra_Insurance_Model_Checkout_Type_Onepage extends Mage_Checkout_Model_Typ
     const DO_NOT_USE_INSURANCE = 2;
 
     /**
-     * @param $useInsurance
-     * @param $cost
-     * @return array
+     * Specify quote shipping method
+     *
+     * @param   string $shippingMethod
+     * @param   bool $useInsurance
+     * @return  array
      */
-    public function saveInsurance($useInsurance, $cost = 0)
+    public function saveShippingMethod($shippingMethod, $useInsurance)
     {
-        if (empty($useInsurance) || ($useInsurance == self::USE_INSURANCE && !$cost)) {
-            return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
+        if (empty($shippingMethod)) {
+            return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
         }
+        $rate = $this->getQuote()->getShippingAddress()->getShippingRateByCode($shippingMethod);
+        if (!$rate) {
+            return array('error' => -1, 'message' => Mage::helper('checkout')->__('Invalid shipping method.'));
+        }
+        $this->getQuote()->getShippingAddress()
+            ->setShippingMethod($shippingMethod);
 
-            /** @var Mage_Sales_Model_Quote $quote */
-            $quote = $this->getQuote();
+        if(Mage::helper('insurance')->isEnabled()) {
+            $cost = 0;
+            if ($useInsurance == self::USE_INSURANCE) {
+                $cost = Mage::helper('insurance')->getCostInsurance();
+            }
+            $this->getQuote()->setInsuranceAmount($cost);
+        }
+        $this->getQuote()->collectTotals();
+        $this->getQuote()->save();
 
-            $quote->setInsuranceAmount($cost);
-            $quote->collectTotals();
-            $quote->save();
 
         $this->getCheckout()
-            ->setStepData('insurance', 'allow', true)
-            ->setStepData('insurance', 'complete', true)
+            ->setStepData('shipping_method', 'complete', true)
             ->setStepData('payment', 'allow', true);
 
         return array();

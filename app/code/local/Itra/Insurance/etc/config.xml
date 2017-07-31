@@ -49,11 +49,6 @@
             <itrainsurance>
                 <class>Itra_Insurance_Block</class>
             </itrainsurance>
-            <checkout>
-                <rewrite>
-                    <onepage>Itra_Insurance_Block_Checkout_Onepage</onepage>
-                </rewrite>
-            </checkout>
             <sales>
                 <rewrite>
                     <order_totals>Itra_Insurance_Block_Order_Totals</order_totals>
