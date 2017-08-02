@@ -1,5 +1,5 @@
-<?php if (Mage::helper('insurance')->isEnabled()): ?>
-    <?php $insurance_amount = $this->getOrder()->getInsuranceAmount();?>
+<?php $insurance_amount = $this->getOrder()->getInsuranceAmount()?>
+<?php if (!is_null($insurance_amount)): ?>
     <tr>
         <td class="label"><?php echo Mage::helper('insurance')->__('Shipping Insurance') ?></td>
         <td>

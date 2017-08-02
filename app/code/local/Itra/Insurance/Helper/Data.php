@@ -32,8 +32,10 @@ class Itra_Insurance_Helper_Data extends Mage_Core_Helper_Abstract
             $insurance_amount = $entity->getOrder()->getInsuranceAmount();
         }
 
+        $entity->setInsuranceAmount($insurance_amount);
         $entity->setGrandTotal($entity->getGrandTotal() + $insurance_amount);
         $entity->setBaseGrandTotal($entity->getBaseGrandTotal() + $insurance_amount);
+
 
     }
 

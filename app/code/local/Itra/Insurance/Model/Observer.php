@@ -2,6 +2,28 @@
 
 class Itra_Insurance_Model_Observer
 {
+    const USE_INSURANCE = 1;
+    const DO_NOT_USE_INSURANCE = 2;
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function saveInsuranceInQuote(Varien_Event_Observer $observer)
+    {
+        if (Mage::helper('insurance')->isEnabled()) {
+            if ($quote = $observer->getQuote()) {
+                $useInsurance = Mage::app()->getRequest()->getPost('insurance');
+
+                $cost = 0;
+                if ($useInsurance == self::USE_INSURANCE) {
+                    $cost = Mage::helper('insurance')->getCostInsurance();
+                }
+                $quote->setInsuranceAmount($cost);
+                $quote->collectTotals();
+                $quote->save();
+            }
+        }
+    }
 
     /**
      * @param Varien_Event_Observer $observer
@@ -12,34 +34,6 @@ class Itra_Insurance_Model_Observer
             if ($quote = $observer->getDataObject()->getQuote()) {
                 $insurance_amount = $quote->getInsuranceAmount();
                 $order->setInsuranceAmount($insurance_amount);
-            }
-        }
-    }
-
-    /**
-     * @param Varien_Event_Observer $observer *
-     */
-    public function saveInvoiceBefore(Varien_Event_Observer $observer)
-    {
-        if (Mage::helper('insurance')->isEnabled() && $invoice = $observer->getEvent()->getInvoice()) {
-            if ($order = $observer->getDataObject()->getOrder()) {
-                $amount = $order->getInsuranceAmount();
-                $invoice->setInsuranceAmount($amount + $invoice->getFeeAmount());
-                $invoice->setInsuranceAmount($amount + $invoice->getBaseFeeAmount());
-            }
-        }
-    }
-
-    /**
-     * @param Varien_Event_Observer $observer *
-     */
-    public function saveCreditmemoBefore(Varien_Event_Observer $observer)
-    {
-        if (Mage::helper('insurance')->isEnabled() && $creditmemo = $observer->getEvent()->getCreditmemo()) {
-            if ($order = $observer->getDataObject()->getOrder()) {
-                $amount = $order->getInsuranceAmount();
-                $creditmemo->setInsuranceAmount($amount + $creditmemo->getFeeAmount());
-                $creditmemo->setInsuranceAmount($amount + $creditmemo->getBaseFeeAmount());
             }
         }
     }
